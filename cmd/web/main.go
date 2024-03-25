@@ -7,12 +7,14 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/GnvSaikiran/snippetbox/internal/models"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type application struct {
 	infoLog, errorLog *log.Logger
 	staticDir         *string
+	snippets          *models.SnippetModel
 }
 
 func main() {
@@ -35,14 +37,15 @@ func main() {
 	defer db.Close()
 
 	// Creating an application struct for dependency injection
-	app := application{
+	app := &application{
 		infoLog:   infoLog,
 		errorLog:  errorLog,
 		staticDir: staticDir,
+		snippets:  &models.SnippetModel{DB: db},
 	}
 
 	// Configuring the server
-	srv := http.Server{
+	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,
 		Handler:  app.Handler(),
