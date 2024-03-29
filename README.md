@@ -1,2 +1,2 @@
 # Snippetbox
-## A website to share text snippets
+### A website to share text snippets
