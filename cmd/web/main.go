@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/GnvSaikiran/snippetbox/internal/models"
+	"github.com/go-playground/form/v4"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -17,6 +18,7 @@ type application struct {
 	staticDir         *string
 	snippets          *models.SnippetModel
 	templateCache     map[string]*template.Template
+	formDecoder       *form.Decoder
 }
 
 func main() {
@@ -44,6 +46,9 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	// Initialize form decoder
+	formDecoder := form.NewDecoder()
+
 	// Creating an application struct for dependency injection
 	app := &application{
 		infoLog:       infoLog,
@@ -51,6 +56,7 @@ func main() {
 		staticDir:     staticDir,
 		snippets:      &models.SnippetModel{DB: db},
 		templateCache: templateCache,
+		formDecoder:   formDecoder,
 	}
 
 	// Configuring the server
