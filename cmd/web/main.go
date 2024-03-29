@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"flag"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +16,7 @@ type application struct {
 	infoLog, errorLog *log.Logger
 	staticDir         *string
 	snippets          *models.SnippetModel
+	templateCache     map[string]*template.Template
 }
 
 func main() {
@@ -36,12 +38,19 @@ func main() {
 
 	defer db.Close()
 
+	// Initializing template cache
+	templateCache, err := newTemplateCache()
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+
 	// Creating an application struct for dependency injection
 	app := &application{
-		infoLog:   infoLog,
-		errorLog:  errorLog,
-		staticDir: staticDir,
-		snippets:  &models.SnippetModel{DB: db},
+		infoLog:       infoLog,
+		errorLog:      errorLog,
+		staticDir:     staticDir,
+		snippets:      &models.SnippetModel{DB: db},
+		templateCache: templateCache,
 	}
 
 	// Configuring the server
