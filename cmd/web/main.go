@@ -19,7 +19,6 @@ import (
 
 type application struct {
 	infoLog, errorLog *log.Logger
-	staticDir         *string
 	snippets          *models.SnippetModel
 	users             *models.UserModel
 	templateCache     map[string]*template.Template
@@ -30,7 +29,6 @@ type application struct {
 func main() {
 	// Using command-line flags for configuration
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	staticDir := flag.String("staticdir", "./ui/static", "Static files directory path")
 	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
 	flag.Parse()
 
@@ -65,7 +63,6 @@ func main() {
 	app := &application{
 		infoLog:        infoLog,
 		errorLog:       errorLog,
-		staticDir:      staticDir,
 		snippets:       &models.SnippetModel{DB: db},
 		users:          &models.UserModel{DB: db},
 		templateCache:  templateCache,
