@@ -8,8 +8,6 @@ import (
 )
 
 func TestHumanDate(t *testing.T) {
-	t.Parallel()
-
 	tests := []struct {
 		name string
 		tm   time.Time
