@@ -29,3 +29,17 @@ func (m *UserModel) Exists(id int) (bool, error) {
 		return false, nil
 	}
 }
+
+func (m *UserModel) Get(id int) (*models.User, error) {
+	user := &models.User{
+		Name:  "alice",
+		Email: "alice@example.com",
+	}
+
+	switch id {
+	case 1:
+		return user, nil
+	default:
+		return nil, models.ErrNoRecord
+	}
+}
