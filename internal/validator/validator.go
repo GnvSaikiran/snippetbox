@@ -1,3 +1,5 @@
+// package validator provides various functions
+// to validate the user input from the forms.
 package validator
 
 import (
@@ -35,10 +37,13 @@ func (v *Validator) CheckField(ok bool, key, message string) {
 	}
 }
 
+// NotBlank checks if the field is empty.
 func NotBlank(value string) bool {
 	return strings.TrimSpace(value) != ""
 }
 
+// MaxChars checks if the characters in the field
+// does not exceed the maximum allowed characters.
 func MaxChars(value string, n int) bool {
 	return utf8.RuneCountInString(value) <= n
 }
